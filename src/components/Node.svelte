@@ -5,23 +5,22 @@
     let x = (window.innerWidth * 0.05) + ( node.position.x * window.innerWidth * 0.7);
     let y = (window.innerHeight * 0.05) + ( node.position.y * window.innerHeight * 0.7);
 
-    let checked = Math.round(node.state) === 1;
+    let positive = Math.round(node.state) === 1;
 
     function hit(){
-        if( checked === true ){
-            checked = false;
+        if( positive === true ){
+            positive = false;
             node.state = 0;
         } else {
-            checked = true;
+            positive = true;
             node.state = 1;
         }
-
     }
 
 </script>
 
-<div class="node" style="top:{y}px; left:{x}px;" class:checked>
-    <input type="checkbox" id="checkbox" bind:checked={checked} on:click={hit}>
+<div class="node" style="top:{y}px; left:{x}px;" class:positive>
+    <input type="checkbox" id="checkbox" bind:checked={positive} on:click={hit}>
     <span>{Math.round(node.state * 100)} %</span>
 </div>
 
@@ -30,7 +29,7 @@
     .node {
         position: absolute;
         z-index: 5;
-        background-color: #222;
+        background-color: #000;
         color: #fff;
         padding: 0.3rem;
         border-radius: 5px;
@@ -38,11 +37,12 @@
         line-break: none;
         user-select: none;
         box-shadow: 0px 0px 5px rgba(0,0,0,0.4);
-        transition: background-color 1s ease;
+        transition: background-color 1s ease, color 1s ease;
     }
 
-    .node.checked {
-        background-color: #00f;
+    .node.positive {
+        color: #000;
+        background-color: #fff;
     }
 
     input {
@@ -51,6 +51,7 @@
 
     span {
         display: inline-block;
+        cursor: grab;
     }
 
 </style>

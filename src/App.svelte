@@ -9,12 +9,19 @@
 	const model = new Network( 11 );
 	console.log( model );
 
-	let state = Math.round( model.state ) === 1;
+	let positive = Math.round( model.state ) === 1;
+	if( positive === true ){
+		document.body.classList.add('positive');
+	} else {
+		document.body.classList.remove('positive');
+	}
 
 </script>
 
 <Canvas />
+
 <Container {model} />
+
 <!-- <Controls /> -->
 
 <div class="state">
@@ -22,9 +29,7 @@
 </div>
 
 <style>
-
 	.state {
         margin: 1rem;
     }
-
 </style>
