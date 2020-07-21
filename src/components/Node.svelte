@@ -10,6 +10,7 @@
     let y = (window.innerHeight * 0.05) + ( node.position.y * window.innerHeight * 0.7);
 
     let positive = Math.round(node.state) === 1;
+    let g = node.state * 255;
 
     function updateState() {
         if( positive === true ){
@@ -23,7 +24,6 @@
 		dispatch('update');
     }
 
-    let g = node.state * 255;
 
 </script>
 

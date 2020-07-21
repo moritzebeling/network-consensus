@@ -8,20 +8,16 @@
 
 	const model = new Network( 11 );
 	let net = model;
-	console.log( net );
 
 	let positive = Math.round( model.state ) === 1;
-	if( positive === true ){
-		document.body.classList.add('positive');
-	} else {
-		document.body.classList.remove('positive');
-	}
+	let g = net.state * 255;
+	document.body.style.backgroundColor = `rgba(${g},${g},${g})`;
 
 	function update(event){
 		console.log('update');
 		net = model;
-
-		let g = net.state * 255;
+		positive = Math.round( model.state ) === 1;
+		g = net.state * 255;
 		document.body.style.backgroundColor = `rgba(${g},${g},${g})`;
 	}
 
@@ -34,6 +30,7 @@
 <!-- <Controls /> -->
 
 <div class="state">
+	<input disabled type="checkbox" id="checkbox" bind:checked={positive}>
 	{Math.round(net.state*100)} %
 </div>
 
