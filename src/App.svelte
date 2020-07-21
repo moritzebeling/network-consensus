@@ -9,8 +9,22 @@
 	const model = new Network( 11 );
 	console.log( model );
 
+	let state = Math.round( model.state ) === 1;
+
 </script>
 
 <Canvas />
 <Container {model} />
 <!-- <Controls /> -->
+
+<div class="state">
+	{Math.round(model.state*100)} %
+</div>
+
+<style>
+
+	.state {
+        margin: 1rem;
+    }
+
+</style>

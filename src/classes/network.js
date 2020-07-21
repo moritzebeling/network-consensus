@@ -50,11 +50,10 @@ export class Network {
 
     get state(){
         let average = 0;
-        for( let i = this._nodes.length; i < 0; i-- ){
+        for( let i = this._nodes.length-1; i >= 0; i-- ){
             average += this._nodes[i].state;
         }
-        average / this._nodes.length;
-        return average;
+        return average / this._nodes.length;
     }
 
     get nodes(){
