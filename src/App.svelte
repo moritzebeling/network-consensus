@@ -6,7 +6,7 @@
 
 	import { Network } from './classes/network.js';
 
-	const model = new Network( 11 );
+	const model = new Network( 50 );
 	let net = model;
 
 	let positive = Math.round( model.state ) === 1;

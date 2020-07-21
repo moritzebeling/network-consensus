@@ -6,8 +6,8 @@
 
     export let node;
 
-    let x = (window.innerWidth * 0.05) + ( node.position.x * window.innerWidth * 0.7);
-    let y = (window.innerHeight * 0.05) + ( node.position.y * window.innerHeight * 0.7);
+    let x = (window.innerWidth * 0.05) + ( node.position.x * window.innerWidth * 0.78);
+    let y = (window.innerHeight * 0.05) + ( node.position.y * window.innerHeight * 0.82);
 
     let positive = Math.round(node.state) === 1;
     let g = node.state * 255;
