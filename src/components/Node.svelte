@@ -1,5 +1,9 @@
 <script>
 
+    import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
+
     export let node;
 
     let x = (window.innerWidth * 0.05) + ( node.position.x * window.innerWidth * 0.7);
@@ -7,7 +11,7 @@
 
     let positive = Math.round(node.state) === 1;
 
-    function hit(){
+    function updateState() {
         if( positive === true ){
             positive = false;
             node.state = 0;
@@ -15,12 +19,13 @@
             positive = true;
             node.state = 1;
         }
+		dispatch('update');
     }
 
 </script>
 
 <div class="node" style="top:{y}px; left:{x}px;" class:positive>
-    <input type="checkbox" id="checkbox" bind:checked={positive} on:click={hit}>
+    <input type="checkbox" id="checkbox" bind:checked={positive} on:click={updateState}>
     <span>{Math.round(node.state * 100)} %</span>
 </div>
 

@@ -1,14 +1,22 @@
 <script>
 
+    import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
+
     import Node from './Node.svelte';
-    export let model;
+    export let network;
+
+    function update() {
+		dispatch('update');
+    }
 
 </script>
 
 <div id="container">
 
-    {#each model.nodes as node}
-        <Node {node} />
+    {#each network.nodes as node}
+        <Node {node} on:update={update} />
     {/each}
 
 </div>

@@ -1,10 +1,17 @@
 <script>
     import Button from './Button.svelte';
+
+    function addNode(){
+        console.log('addNode()');
+    }
+    function removeNode(){
+        console.log('removeNode()');
+    }
 </script>
 
 <div id="controls">
-    <Button>Add Node</Button>
-    <Button>Remove Node</Button>
+    <Button on:click={addNode}>Add Node</Button>
+    <Button on:click={removeNode}>Remove Node</Button>
 </div>
 
 <style>
