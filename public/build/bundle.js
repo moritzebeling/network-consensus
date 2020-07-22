@@ -1241,60 +1241,120 @@ var app = (function () {
     	}
     }
 
+    function distance( position1, position2 ){
+        let x = position1.x - position2.x;
+        let y = position1.y - position2.y;
+        return Math.sqrt( x*x + y*y );
+    }
+
     class Node$1 {
 
-        constructor( network ){
+        constructor( id, network ){
 
+            this._id = id;
             this._network = network;
-            this._state = this.createState();
-            this._position = this.createPosition();
+
+            this.createState();
+            this.createPosition();
 
         }
 
         createState(){
-            return Math.random();
-        }
-        set state( s ){
-            this._state = parseFloat( s );
-        }
-        get state(){
-            return this._state;
+            this._state = Math.random();
         }
 
         createPosition(){
-            return {
+            this._position = {
                 x: Math.random(),
                 y: Math.random(),
             };
         }
+
+        findPeers(){
+            let peers = [];
+            for( let node of this._network._nodes ){
+                if( node.id === this.id ){ continue; }
+                peers.push({
+                    distance: distance( this.position, node.position ),
+                    node: node
+                });
+            }
+            peers.sort((a,b) =>
+                (a.distance > b.distance) ? 1 : ((b.distance > a.distance) ? -1 : 0)
+            );
+            peers = peers.slice(0,5);
+            this._peers = peers.map(p => { return p.node; });
+        }
+
+        set state( s ){
+            this._state = parseFloat( s );
+            setTimeout(()=>{
+                this.spread( this._state );
+            }, 500);
+        }
+
+        get id(){
+            return this._id;
+        }
+        get state(){
+            return this._state;
+        }
+        get peers(){
+            return this._peers;
+        }
         get position(){
             return this._position;
+        }
+
+        spread( state ){
+            for( let node of this.peers ){
+                node.receive( state );
+            }
+            this._network.ping();
+        }
+
+        receive( state ){
+            let delta = state - this._state;
+            if( Math.abs( delta * 100 ) < 2 ){
+                return;
+            }
+            this._state += (delta * 0.5);
         }
 
     }
 
     class Network {
 
-        constructor( length = 11 ){
+        constructor( length = 21 ){
             this._nodes = [];
 
             for (let i = 0; i < length; i++){
-                this.addNode();
+                this._nodes.push( new Node$1( i, this ) );
             }
+            for (let node of this._nodes){
+                node.findPeers();
+            }
+
         }
 
         addNode(){
-            this._nodes.push( new Node$1( this ) );
+            let node = new Node$1( this );
+            node.findPeers();
+            this._nodes.push( node );
         }
 
         removeNode(){
             return this._nodes.pop();
         }
 
+        ping(){
+            console.log('Network Ping');
+        }
+
         get state(){
             let average = 0;
-            for( let i = this._nodes.length-1; i >= 0; i-- ){
-                average += this._nodes[i].state;
+            for (let node of this.nodes){
+                average += node.state;
             }
             return average / this._nodes.length;
         }
@@ -1347,9 +1407,9 @@ var app = (function () {
     			input.disabled = true;
     			attr_dev(input, "type", "checkbox");
     			attr_dev(input, "id", "checkbox");
-    			add_location(input, file$5, 32, 1, 730);
+    			add_location(input, file$5, 33, 1, 729);
     			attr_dev(div, "class", "state svelte-1pltwgr");
-    			add_location(div, file$5, 31, 0, 709);
+    			add_location(div, file$5, 32, 0, 708);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1417,14 +1477,14 @@ var app = (function () {
     }
 
     function instance$5($$self, $$props, $$invalidate) {
-    	const model = new Network(50);
+    	const model = new Network(21);
     	let net = model;
+    	console.log(model);
     	let positive = Math.round(model.state) === 1;
     	let g = net.state * 255;
     	document.body.style.backgroundColor = `rgba(${g},${g},${g})`;
 
     	function update(event) {
-    		console.log("update");
     		$$invalidate(0, net = model);
     		$$invalidate(1, positive = Math.round(model.state) === 1);
     		g = net.state * 255;

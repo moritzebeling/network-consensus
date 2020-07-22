@@ -6,15 +6,16 @@
 
 	import { Network } from './classes/network.js';
 
-	const model = new Network( 50 );
+	const model = new Network( 21 );
 	let net = model;
+
+	console.log( model );
 
 	let positive = Math.round( model.state ) === 1;
 	let g = net.state * 255;
 	document.body.style.backgroundColor = `rgba(${g},${g},${g})`;
 
 	function update(event){
-		console.log('update');
 		net = model;
 		positive = Math.round( model.state ) === 1;
 		g = net.state * 255;
